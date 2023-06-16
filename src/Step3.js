@@ -1,30 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormStore } from "./Store";
 
-let ADDON_LIST = [
-  {
-    id: "1",
-    addon_title: "Food1",
-    addon_desc: "Get Restuaranct Food",
-    addon_price: "+$120",
-    addon_checked: true,
-  },
-  {
-    id: "2",
-    addon_title: "MoterBike Rent",
-    addon_desc: "Rent a MotorBike",
-    addon_price: "+30/hr",
-    addon_checked: false,
-  },
-  {
-    id: "3",
-    addon_title: "Hotel Stay",
-    addon_desc: "Get Luxurizios Hotel",
-    addon_price: "+$300/day",
-    addon_checked: false,
-  },
-];
 function Step3(props) {
-  const [addons, setAddons] = useState(ADDON_LIST);
+  const addons = useFormStore((state) => state.addOnDetails);
+  const setAddons = useFormStore((state) => state.setaddOnDetails);
+
   const addonAddRemove = (id)=>{
     let addon_check_changed = addons.find((item)=>{
       return item.id===id
@@ -35,7 +15,7 @@ function Step3(props) {
     let addon_list = [...addons_removed,{...addon_check_changed,addon_checked:!addon_check_changed.addon_checked}].sort((a, b) => a.id.toLowerCase() > b.id.toLowerCase() ? 1 : -1)
     setAddons(addon_list)
   }
-  let b = addons.map((item) => {
+  let addons_list = addons.map((item) => {
     return (
       <label key={item.id} 
         htmlFor={"Addon" + item.id}
@@ -60,6 +40,7 @@ function Step3(props) {
       </label>
     );
   });
+
   return (
     <div>
       <div className=" px-10 py-10 sm:py-0 sm:px-0">
@@ -69,14 +50,8 @@ function Step3(props) {
             Add-ons help enhance your surfing experience.
           </p>
           <div className=" flex justify-center  gap-3 flex-col py-5 md:h-[16pc]  ">
-            {b}
+            {addons_list}
           </div>
-        </div>
-        <div className=" flex justify-between pt-10 pr-10">
-          <button className=" bg-sky-400 py-3 px-5 rounded-xl">Go Back</button>
-          <button className=" bg-sky-400 py-3 px-5 rounded-xl">
-            Next Step
-          </button>
         </div>
       </div>
     </div>
